@@ -1,16 +1,13 @@
 class ItemsController < ApplicationController
   def index
-    @items = Item.last(10)
-    respond_to do |format|
-      format.html
-      format.rss { render :layout => false }
-    end
+    @items = Item.all.reverse
+    render layout: false
   end
 
   def create
     count = Item.count + 1
-    @item = Item.create!(title: "this is item number #{count}")
+    @item = Item.create!(title: params[:title])
     @items = Item.last(10)
-    render :index
+    head :created
   end
 end
